@@ -25,41 +25,41 @@ export default function HomePage() {
       {/* Modern Navigation Bar */}
       <nav className="bg-white/80 backdrop-blur-lg border-b border-gray-200/20 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+          <div className="flex justify-between h-14 sm:h-16">
             <div className="flex items-center">
               <div className="flex-shrink-0 flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">L</span>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm sm:text-lg">L</span>
                 </div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Localyst
                 </span>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {status === 'loading' ? (
-                <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-200 rounded-full animate-pulse"></div>
               ) : session ? (
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 sm:space-x-4">
                   <button
                     onClick={() => router.push('/dashboard')}
-                    className="text-gray-700 hover:text-blue-600 px-4 py-2 rounded-xl hover:bg-blue-50 transition-all duration-300 font-medium"
+                    className="hidden sm:block text-gray-700 hover:text-blue-600 px-4 py-2 rounded-xl hover:bg-blue-50 transition-all duration-300 font-medium"
                   >
                     Dashboard
                   </button>
-                  <div className="flex items-center space-x-3 bg-gray-50 rounded-full px-4 py-2">
+                  <div className="flex items-center space-x-2 sm:space-x-3 bg-gray-50 rounded-full px-2 sm:px-4 py-2">
                     <img
-                      className="h-8 w-8 rounded-full ring-2 ring-blue-200"
+                      className="h-6 w-6 sm:h-8 sm:w-8 rounded-full ring-2 ring-blue-200"
                       src={session.user?.image || ''}
                       alt={session.user?.name || ''}
                     />
-                    <span className="text-sm font-medium text-gray-700 hidden sm:block">
+                    <span className="text-xs sm:text-sm font-medium text-gray-700 hidden sm:block">
                       {session.user?.name?.split(' ')[0]}
                     </span>
                   </div>
                   <button
                     onClick={() => signOut()}
-                    className="text-gray-500 hover:text-red-600 px-3 py-2 rounded-lg transition duration-300"
+                    className="text-gray-500 hover:text-red-600 px-2 sm:px-3 py-2 rounded-lg transition duration-300 text-sm"
                   >
                     Sign Out
                   </button>
@@ -67,7 +67,7 @@ export default function HomePage() {
               ) : (
                 <button
                   onClick={() => signIn()}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2.5 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm sm:text-base"
                 >
                   Sign In
                 </button>
@@ -80,23 +80,23 @@ export default function HomePage() {
       {/* Hero Section with Enhanced Design */}
       <div className="relative overflow-hidden">
         {/* Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400/20 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-          <div className="absolute top-40 right-10 w-72 h-72 bg-purple-400/20 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-1000"></div>
-          <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-400/20 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400/10 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+          <div className="absolute top-40 right-10 w-72 h-72 bg-purple-400/10 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-1000"></div>
+          <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-400/10 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-20 sm:pb-32">
           <div className="text-center">
             {/* Main Heading */}
             <div className="mb-8">
-              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">
-                <span className="block text-gray-900">Welcome to</span>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4 sm:mb-6">
+                <span className="block text-gray-900 mb-2">Welcome to</span>
                 <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent animate-gradient-x">
                   Localyst
                 </span>
               </h1>
-              <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
                 Create your professional online store in 
                 <span className="font-bold text-blue-600"> 30 seconds </span>
                 using AI-powered technology
@@ -104,11 +104,11 @@ export default function HomePage() {
             </div>
 
             {/* Feature Pills */}
-            <div className="flex flex-wrap justify-center gap-3 mb-12">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 px-4">
               {['🤖 AI-Powered', '⚡ Lightning Fast', '🌍 Multi-Language', '📱 Mobile Ready'].map((feature) => (
                 <span 
                   key={feature}
-                  className="px-6 py-3 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-700 border border-gray-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                  className="px-3 sm:px-6 py-2 sm:py-3 bg-white/80 backdrop-blur-sm rounded-full text-xs sm:text-sm font-medium text-gray-700 border border-gray-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                 >
                   {feature}
                 </span>
@@ -116,23 +116,23 @@ export default function HomePage() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center max-w-lg mx-auto">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center max-w-2xl mx-auto px-4">
               <button
                 onClick={handleCreateStore}
                 disabled={loading}
-                className="group relative w-full sm:w-auto overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-blue-500/25"
+                className="group relative w-full sm:w-auto overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-xl sm:rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-blue-500/25"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                <div className="relative flex items-center justify-center space-x-3">
+                <div className="relative flex items-center justify-center space-x-2 sm:space-x-3">
                   {loading ? (
                     <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                      <span>Creating...</span>
+                      <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></div>
+                      <span className="text-sm sm:text-lg">Creating...</span>
                     </>
                   ) : (
                     <>
-                      <span className="text-2xl">🏪</span>
-                      <span className="text-lg">I'm a Business Owner</span>
+                      <span className="text-xl sm:text-2xl">🏪</span>
+                      <span className="text-sm sm:text-lg">I'm a Business Owner</span>
                     </>
                   )}
                 </div>
@@ -143,11 +143,11 @@ export default function HomePage() {
 
               <button
                 onClick={handleExploreServices}
-                className="group w-full sm:w-auto bg-white/90 backdrop-blur-sm hover:bg-white text-purple-700 font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-purple-500/25 border border-purple-200"
+                className="group w-full sm:w-auto bg-white/90 backdrop-blur-sm hover:bg-white text-purple-700 font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-xl sm:rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-purple-500/25 border border-purple-200"
               >
-                <div className="flex items-center justify-center space-x-3">
-                  <span className="text-2xl">🔍</span>
-                  <span className="text-lg">I'm Looking for Services</span>
+                <div className="flex items-center justify-center space-x-2 sm:space-x-3">
+                  <span className="text-xl sm:text-2xl">🔍</span>
+                  <span className="text-sm sm:text-lg">I'm Looking for Services</span>
                 </div>
               </button>
             </div>
