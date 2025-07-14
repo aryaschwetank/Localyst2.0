@@ -1,22 +1,19 @@
-import googleTranslate from 'google-translate-api'; // Import Google Translate API
-import { Translation } from '../types'; // Import the Translation type
+// Temporarily disable translation service
+// TODO: Implement proper translation service later
 
-// Function to handle translation requests
-export const translateText = async (text: string, targetLanguage: string): Promise<Translation> => {
-    try {
-        const response = await googleTranslate(text, { to: targetLanguage });
-        return {
-            originalText: text,
-            translatedText: response.text,
-            language: response.from.language.iso,
-        };
-    } catch (error) {
-        throw new Error(`Translation failed: ${(error as Error).message}`);
-    }
-};
+export const translateText = async (text: string, targetLanguage: string) => {
+  // Placeholder implementation
+  return {
+    originalText: text,
+    translatedText: text, // Return original text for now
+    language: 'en',
+  }
+}
 
-// Function to handle batch translation requests
-export const translateTexts = async (texts: string[], targetLanguage: string): Promise<Translation[]> => {
-    const translationPromises = texts.map(text => translateText(text, targetLanguage));
-    return Promise.all(translationPromises);
-};
+export const translateTexts = async (texts: string[], targetLanguage: string) => {
+  return texts.map(text => ({
+    originalText: text,
+    translatedText: text,
+    language: 'en',
+  }))
+}
