@@ -73,17 +73,8 @@ export default function CreateStore() {
     try {
       console.log('Creating store:', formData);
       
-      // Show progress
-      const progressDiv = document.createElement('div');
-      progressDiv.innerHTML = '🚀 Creating your store...';
-      progressDiv.style.cssText = 'position:fixed;top:20px;right:20px;background:#3B82F6;color:white;padding:12px 20px;border-radius:8px;z-index:1000;';
-      document.body.appendChild(progressDiv);
-      
-      // Simulate API delay
+      // Simulate API delay with progress
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Remove progress indicator
-      document.body.removeChild(progressDiv);
       
       alert('🎉 Store created successfully! Redirecting to dashboard...');
       router.push('/dashboard');
@@ -194,7 +185,7 @@ export default function CreateStore() {
               )}
             </button>
 
-            {/* Add a helper text below button */}
+            {/* Add helper text */}
             <p className="text-center text-sm text-gray-500 mt-2">
               All fields marked with * are required
             </p>
@@ -202,12 +193,12 @@ export default function CreateStore() {
         </div>
       </div>
 
-      {/* Progress indicator */}
+      {/* Loading overlay */}
       {loading && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-8 text-center">
+          <div className="bg-white rounded-lg p-8 text-center shadow-2xl">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <h3 className="text-lg font-semibold text-gray-800">Creating Your Store</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">Creating Your Store</h3>
             <p className="text-gray-600">Please wait while we set up your business...</p>
           </div>
         </div>
