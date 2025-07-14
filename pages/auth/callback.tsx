@@ -13,7 +13,7 @@ export default function AuthCallback() {
         const { code, state, error } = router.query
 
         if (error) {
-          setStatus(`Authentication error: ${error}`)
+          setStatus(`Error: ${error}`)
           setTimeout(() => router.push('/'), 3000)
           return
         }
@@ -24,37 +24,31 @@ export default function AuthCallback() {
           return
         }
 
-        setStatus('Exchanging code for tokens...')
+        setStatus('Getting access token...')
 
-        // Exchange authorization code for access token
-        const tokenResponse = await fetch('/api/auth/google-token', {
+        // Use our simple API endpoint
+        const tokenResponse = await fetch('/api/auth-callback', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ code }),
         })
 
+        const tokenData = await tokenResponse.json()
+
         if (!tokenResponse.ok) {
-          throw new Error('Token exchange failed')
+          throw new Error(tokenData.error || 'Token exchange failed')
         }
 
-        const tokenData = await tokenResponse.json()
+        setStatus('Getting user profile...')
 
         // Get user profile
         const profileResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
-          headers: {
-            Authorization: `Bearer ${tokenData.access_token}`,
-          },
+          headers: { Authorization: `Bearer ${tokenData.access_token}` },
         })
-
-        if (!profileResponse.ok) {
-          throw new Error('Failed to get user profile')
-        }
 
         const userProfile = await profileResponse.json()
 
-        // Login user
+        // Save to auth context
         login({
           id: userProfile.id,
           name: userProfile.name,
@@ -63,31 +57,28 @@ export default function AuthCallback() {
           accessToken: tokenData.access_token,
         })
 
-        setStatus('Authentication successful! Redirecting...')
-
-        // Redirect based on state parameter
+        setStatus('Success! Redirecting...')
+        
         const redirectTo = state === 'dashboard' ? '/dashboard' : '/'
         setTimeout(() => router.push(redirectTo), 1000)
 
       } catch (error) {
-        console.error('Auth callback error:', error)
-        setStatus('Authentication failed. Redirecting to home...')
+        console.error('Auth error:', error)
+        setStatus('Authentication failed. Redirecting...')
         setTimeout(() => router.push('/'), 3000)
       }
     }
 
-    if (router.isReady) {
+    if (router.isReady && router.query.code) {
       handleCallback()
     }
-  }, [router, login])
+  }, [router.isReady, router.query, login])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+      <div className="text-center">
         <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">
-          Authenticating...
-        </h2>
+        <h2 className="text-xl font-semibold mb-2">Authenticating...</h2>
         <p className="text-gray-600">{status}</p>
       </div>
     </div>
