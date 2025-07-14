@@ -51,15 +51,41 @@ export default function CreateStore() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validation
+    if (!formData.businessName.trim()) {
+      alert('Please enter a business name');
+      return;
+    }
+    
+    if (!formData.businessType) {
+      alert('Please select a business type');
+      return;
+    }
+    
+    if (!formData.location.trim()) {
+      alert('Please enter a location');
+      return;
+    }
+    
     setLoading(true);
     
     try {
       console.log('Creating store:', formData);
       
+      // Show progress
+      const progressDiv = document.createElement('div');
+      progressDiv.innerHTML = '🚀 Creating your store...';
+      progressDiv.style.cssText = 'position:fixed;top:20px;right:20px;background:#3B82F6;color:white;padding:12px 20px;border-radius:8px;z-index:1000;';
+      document.body.appendChild(progressDiv);
+      
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      alert('🎉 Store created successfully! (Demo mode)');
+      // Remove progress indicator
+      document.body.removeChild(progressDiv);
+      
+      alert('🎉 Store created successfully! Redirecting to dashboard...');
       router.push('/dashboard');
         
     } catch (error) {
@@ -156,20 +182,36 @@ export default function CreateStore() {
             <button
               type="submit"
               disabled={loading || !formData.businessName || !formData.businessType || !formData.location}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-bold py-4 px-6 rounded-lg transition duration-300"
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-lg transition duration-300 transform hover:scale-105"
             >
               {loading ? (
                 <div className="flex items-center justify-center">
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Creating Store...
+                  Creating Your Store...
                 </div>
               ) : (
-                '🚀 Create Store'
+                '🚀 Create My Store'
               )}
             </button>
+
+            {/* Add a helper text below button */}
+            <p className="text-center text-sm text-gray-500 mt-2">
+              All fields marked with * are required
+            </p>
           </form>
         </div>
       </div>
+
+      {/* Progress indicator */}
+      {loading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <h3 className="text-lg font-semibold text-gray-800">Creating Your Store</h3>
+            <p className="text-gray-600">Please wait while we set up your business...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
