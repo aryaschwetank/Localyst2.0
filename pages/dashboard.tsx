@@ -1,42 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../src/contexts/AuthContext';
 
-// Remove these problematic imports for now
-// import { getUserStores, deleteStore, StoreDocument } from '@/services/firestore';
-// import { exportStoreToPDF, exportStoreAsImage } from '@/services/exportService';
-
-interface StoreDocument {
-  id?: string;
-  businessName: string;
-  businessType: string;
-  location: string;
-  tagline: string;
-  services: string[];
-  views?: number;
-  createdAt?: any;
-  storeSlug: string;
-  isPublished?: boolean;
-}
-
 export default function Dashboard() {
   const router = useRouter();
-  const { user, loading: authLoading } = useAuth();
-  const [stores, setStores] = useState<StoreDocument[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { user, loading } = useAuth();
 
-  // Redirect to sign in if not authenticated
   useEffect(() => {
-    if (authLoading) return;
+    if (loading) return;
     if (!user) {
       router.push('/');
       return;
     }
-    setLoading(false);
-  }, [user, authLoading, router]);
+  }, [user, loading, router]);
 
-  // Show loading while checking authentication
-  if (authLoading || loading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
@@ -64,11 +42,13 @@ export default function Dashboard() {
               <p className="text-gray-600">Manage your businesses and track performance</p>
             </div>
             <div className="flex items-center space-x-4">
-              <img
-                className="h-10 w-10 rounded-full"
-                src={user?.picture || ''}
-                alt={user?.name || ''}
-              />
+              {user?.picture && (
+                <img
+                  className="h-10 w-10 rounded-full"
+                  src={user.picture}
+                  alt={user.name || ''}
+                />
+              )}
               <button
                 onClick={() => {
                   localStorage.removeItem('user');

@@ -26,10 +26,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }),
     })
 
-    if (!tokenResponse.ok) {
-      throw new Error('Token exchange failed')
-    }
-
     const tokenData = await tokenResponse.json()
     res.status(200).json(tokenData)
 

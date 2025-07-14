@@ -3,11 +3,11 @@ import { useRouter } from 'next/router';
 import { useAuth } from '../src/contexts/AuthContext';
 
 const BUSINESS_CATEGORIES = [
-  { value: 'restaurant', label: '🍽️ Restaurant', category: 'Food & Dining' },
-  { value: 'cafe', label: '☕ Cafe/Coffee Shop', category: 'Food & Dining' },
-  { value: 'salon', label: '💇 Hair Salon', category: 'Health & Beauty' },
-  { value: 'mechanic', label: '🔧 Auto Repair Shop', category: 'Automotive' },
-  { value: 'other', label: '📋 Other Business', category: 'Other' }
+  { value: 'restaurant', label: '🍽️ Restaurant' },
+  { value: 'cafe', label: '☕ Cafe/Coffee Shop' },
+  { value: 'salon', label: '💇 Hair Salon' },
+  { value: 'mechanic', label: '🔧 Auto Repair Shop' },
+  { value: 'other', label: '📋 Other Business' }
 ];
 
 export default function CreateStore() {
@@ -20,7 +20,6 @@ export default function CreateStore() {
     businessType: '',
     location: '',
     phone: '',
-    hours: '',
     description: '',
   });
 
@@ -50,7 +49,8 @@ export default function CreateStore() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setLoading(true);
     
     try {
@@ -76,7 +76,7 @@ export default function CreateStore() {
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-8">Create Your Store</h1>
           
-          <div className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Business Name *
@@ -86,7 +86,7 @@ export default function CreateStore() {
                 name="businessName"
                 value={formData.businessName}
                 onChange={handleInputChange}
-                className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Enter your business name"
                 required
               />
@@ -100,7 +100,7 @@ export default function CreateStore() {
                 name="businessType"
                 value={formData.businessType}
                 onChange={handleInputChange}
-                className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               >
                 <option value="">Select your business type...</option>
@@ -119,7 +119,7 @@ export default function CreateStore() {
                 name="location"
                 value={formData.location}
                 onChange={handleInputChange}
-                className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="e.g., Delhi, Mumbai"
                 required
               />
@@ -127,22 +127,35 @@ export default function CreateStore() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Phone Number *
+                Phone Number
               </label>
               <input
                 type="tel"
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="+91 98765 43210"
-                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Description
+              </label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                rows={3}
+                className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Brief description of your business"
               />
             </div>
 
             <button
-              onClick={handleSubmit}
-              disabled={loading || !formData.businessName || !formData.businessType}
+              type="submit"
+              disabled={loading || !formData.businessName || !formData.businessType || !formData.location}
               className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-bold py-4 px-6 rounded-lg transition duration-300"
             >
               {loading ? (
@@ -154,7 +167,7 @@ export default function CreateStore() {
                 '🚀 Create Store'
               )}
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>
