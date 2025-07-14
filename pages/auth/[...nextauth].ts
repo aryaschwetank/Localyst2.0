@@ -18,7 +18,17 @@ export default NextAuth({
     async session({ session, token }) {
       return session
     },
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url
+      return baseUrl
+    },
+  },
+  pages: {
+    error: '/auth/error',
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: false, // Turn off debug for now
+  debug: true, // Enable debug for now
 })

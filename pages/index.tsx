@@ -10,10 +10,23 @@ export default function HomePage() {
   const handleCreateStore = async () => {
     console.log('🔘 Button clicked, session:', session, 'status:', status)
     
+    if (status === 'loading') {
+      console.log('⏳ Still loading...')
+      return
+    }
+    
     if (!session) {
-      console.log('🔐 Redirecting to Google OAuth...')
-      // Use direct redirect instead of signIn
-      window.location.href = 'https://localyst2-0.vercel.app/api/auth/signin/google?callbackUrl=' + encodeURIComponent('https://localyst2-0.vercel.app/dashboard')
+      console.log('🔐 Starting Google sign in...')
+      setLoading(true)
+      try {
+        await signIn('google', { 
+          callbackUrl: '/dashboard',
+          redirect: true 
+        })
+      } catch (error) {
+        console.error('🚨 SignIn error:', error)
+        setLoading(false)
+      }
       return
     }
     
