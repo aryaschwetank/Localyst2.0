@@ -4,22 +4,24 @@ import { useAuth } from '../src/contexts/AuthContext';
 
 export default function Dashboard() {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  const { loading } = useAuth();
 
   useEffect(() => {
-    if (loading) return;
+    if (authLoading) return;
     if (!user) {
       router.push('/');
       return;
     }
-  }, [user, loading, router]);
+  }, [user, authLoading, router]);
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading your dashboard...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">Loading Dashboard</h2>
+          <p className="text-gray-600">Please wait while we load your business data...</p>
         </div>
       </div>
     );
@@ -36,10 +38,13 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-gray-900">
                 Welcome back, {user?.name?.split(' ')[0]}! 👋
               </h1>
               <p className="text-gray-600">Manage your businesses and track performance</p>
+              <p className="text-sm text-blue-600 mt-1">
+                Signed in as {user?.email}
+              </p>
             </div>
             <div className="flex items-center space-x-4">
               {user?.picture && (
@@ -52,9 +57,10 @@ export default function Dashboard() {
               <button
                 onClick={() => {
                   localStorage.removeItem('user');
+                  alert('Signed out successfully!');
                   router.push('/');
                 }}
-                className="text-gray-500 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300"
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-300"
               >
                 Sign Out
               </button>

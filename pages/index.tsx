@@ -61,12 +61,15 @@ export default function HomePage() {
                     alt={user.name}
                     className="w-8 h-8 rounded-full"
                   />
-                  <span className="text-gray-700">Hi, {user.name}</span>
+                  <span className="text-gray-700">Hi, {user.name?.split(' ')[0]}</span>
                   <button
-                    onClick={logout}
-                    className="text-gray-600 hover:text-gray-800"
+                    onClick={() => {
+                      logout()
+                      alert('Signed out successfully!')
+                    }}
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm transition-colors"
                   >
-                    Logout
+                    Sign Out
                   </button>
                 </div>
               ) : (
