@@ -7,13 +7,19 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const { data: session, status } = useSession();
 
-  const handleCreateStore = () => {
+  const handleCreateStore = async () => {
+    console.log('🔘 Button clicked, session:', session, 'status:', status)
+    
     if (!session) {
-      signIn('google', { callbackUrl: '/create-store' });
-      return;
+      console.log('🔐 Redirecting to Google OAuth...')
+      // Use direct redirect instead of signIn
+      window.location.href = 'https://localyst2-0.vercel.app/api/auth/signin/google?callbackUrl=' + encodeURIComponent('https://localyst2-0.vercel.app/dashboard')
+      return
     }
-    setLoading(true);
-    router.push('/create-store');
+    
+    console.log('✅ User authenticated, redirecting to dashboard...')
+    setLoading(true)
+    router.push('/dashboard')
   };
 
   const handleExploreServices = () => {

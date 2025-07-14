@@ -1,43 +1,24 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 
-declare module 'next-auth' {
-  interface Session {
-    user: {
-      id?: string
-      name?: string | null
-      email?: string | null
-      image?: string | null
-    }
-  }
-}
-
 export default NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || 'dummy-client-id',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'dummy-client-secret',
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   callbacks: {
-    session: async ({ session, token }) => {
-      if (session?.user) {
-        session.user.id = token.sub;
+    async jwt({ token, account }) {
+      if (account) {
+        token.accessToken = account.access_token
       }
-      return session;
+      return token
     },
-    jwt: async ({ user, token }) => {
-      if (user) {
-        token.sub = user.id;
-      }
-      return token;
+    async session({ session, token }) {
+      return session
     },
   },
-  session: {
-    strategy: 'jwt',
-  },
-  pages: {
-    signIn: '/auth/signin',
-  },
-  secret: process.env.NEXTAUTH_SECRET || 'fallback-secret-key',
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: false, // Turn off debug for now
 })
